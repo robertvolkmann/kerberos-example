@@ -1,0 +1,19 @@
+FROM registry.fedoraproject.org/fedora-minimal:26
+
+RUN microdnf install --setopt='tsflags=nodocs' httpd mod_auth_kerb && \
+    microdnf clean all
+
+RUN ln -sf /proc/self/fd/1 /var/log/httpd/access_log && \
+    ln -sf /proc/self/fd/1 /var/log/httpd/error_log
+
+COPY vhost.conf /etc/httpd/conf.d/
+
+ENV KRB5_TRACE /proc/self/fd/1
+
+COPY krb5.* /etc/
+
+RUN chown apache:apache /etc/krb5.keytab
+
+EXPOSE 80
+
+CMD ["httpd", "-D", "FOREGROUND"]

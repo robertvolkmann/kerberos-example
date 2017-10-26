@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  kdc.example.com:
+    build:
+      context: .
+      dockerfile: Dockerfile.kdc
+    hostname: kdc.example.com
+  client.example.com:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+  httpd.example.com:
+    build:
+      context: .
+      dockerfile: Dockerfile.httpd
